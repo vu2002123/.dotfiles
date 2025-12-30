@@ -1,4 +1,5 @@
 return {
-    'willothy/wezterm.nvim',
-    config = true
+  'willothy/wezterm.nvim',
+  enabled=false,
+  config = true
 }
