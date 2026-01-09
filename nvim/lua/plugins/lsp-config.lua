@@ -215,7 +215,7 @@ return {
             -- FIX: CamelCase is required here
             disableOrganizeImports = true, 
             analysis = {
-              typeCheckingMode = "off",
+              typeCheckingMode = "basic",
               -- FIX: These must be CamelCase to be recognized
               diagnosticMode = "workspace",
               useLibraryCodeForTypes = true,
