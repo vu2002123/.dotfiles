@@ -3,7 +3,7 @@ vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
 vim.cmd("set number")
-vim.g.python3_host_prog=vim.fn.expand("/usr/bin/python")
+vim.g.python3_host_prog=vim.fn.expand("/home/vu2002123/miniconda3/envs/chemtools/bin/python")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then

@@ -286,6 +286,11 @@ return {
 					-- by the server configuration above. Useful when disabling
 					-- certain features of an LSP (for example, turning off formatting for ts_ls)
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+          server.on_attach = function(client, bufnr)
+            if client.name == "basedpyright" or client.name == "lua_ls" then
+              client.server_capabilities.documentFormattingProvider = false
+            end
+          end
 					require("lspconfig")[server_name].setup(server)
 				end,
 			},
