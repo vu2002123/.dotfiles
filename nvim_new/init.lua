@@ -946,20 +946,29 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'rebelot/kanagawa.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+  -- 1. Catppuccin (Light Mode)
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('kanagawa').setup()
-      -- setup must be called before loading
-      vim.cmd.colorscheme 'kanagawa-wave'
-      -- Load the colorscheme here.
+      -- Optional: Configure default transparency or other settings here
+      require('catppuccin').setup {
+        transparent_background = false,
+      }
+    end,
+  },
+
+  -- 2. Gruvbox Material (Dark Mode)
+  {
+    'sainnhe/gruvbox-material',
+    priority = 1000,
+    config = function()
+      -- We set the variables here so they apply on startup
+      vim.g.gruvbox_material_background = 'hard'
+      vim.g.gruvbox_material_foreground = 'material'
+      -- Note: We don't load the colorscheme command here yet,
+      -- we let the logic block at the bottom handle the initial load.
     end,
   },
 
@@ -1080,6 +1089,30 @@ require('lazy').setup({
     },
   },
 })
+-- [[ THEME SYNC LOGIC (WezTerm <-> Neovim) ]]
+-- This function receives F11 from WezTerm and toggles the internal theme
+local function toggle_theme()
+  if vim.o.background == 'dark' then
+    -- Switch to LIGHT (Catppuccin Latte)
+    vim.o.background = 'light'
+    require('catppuccin').setup { flavour = 'latte' }
+    vim.cmd.colorscheme 'catppuccin'
+  else
+    -- Switch to DARK (Gruvbox Material Hard)
+    vim.o.background = 'dark'
+    vim.g.gruvbox_material_background = 'medium'
+    vim.cmd.colorscheme 'gruvbox-material'
+  end
+end
 
+-- Map F11 to trigger the toggle
+-- WezTerm sends this key automatically when you press Leader+t
+vim.keymap.set({ 'n', 'i', 'v' }, '<F11>', toggle_theme, { desc = 'Toggle Theme' })
+
+-- [[ STARTUP THEME ]]
+-- Force Gruvbox (Dark) on startup by default
+vim.o.background = 'light'
+require('catppuccin').setup { flavour = 'latte' }
+vim.cmd.colorscheme 'catppuccin'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

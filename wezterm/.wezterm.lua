@@ -1,117 +1,127 @@
--- ~/.wezterm.lua
 local wezterm = require("wezterm")
 local mux = wezterm.mux
+local action = wezterm.action
 
+-- Startup: Maximize the window immediately
 wezterm.on("gui-startup", function(cmd)
-  local tab, pane, window = mux.spawn_window(cmd or {})
-  window:gui_window():maximize()
+	local tab, pane, window = mux.spawn_window(cmd or {})
+	window:gui_window():maximize()
 end)
 
 local config = {}
 if wezterm.config_builder then
-  config = wezterm.config_builder()
+	config = wezterm.config_builder()
 end
 
--- change config now
-config.default_domain = 'WSL:Ubuntu'
+-- [[ GENERAL SETTINGS ]]
+config.default_domain = "WSL:Ubuntu"
 config.default_cwd = "/home/vu2002123"
--- Appearance
 config.term = "xterm-256color"
-config.font = wezterm.font("JetBrains Mono")
-config.font_size = 11
-config.enable_tab_bar = true
-config.hide_tab_bar_if_only_one_tab = true
-config.color_scheme = "Kanagawa (Gogh)"
+
+-- [[ APPEARANCE ]]
+-- Default to Light Mode
+config.color_scheme = "Catppuccin Latte"
+config.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "Bold" })
+config.font_size = 11.0
+config.line_height = 1.2
 config.window_decorations = "RESIZE"
 
+-- Tab Bar
+config.enable_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = true
+
+-- Padding
 config.window_padding = {
-  top = 10,
-  bottom = 10,
-  left = 10,
-  right = 10,
+	top = 10,
+	bottom = 10,
+	left = 10,
+	right = 10,
 }
 
+-- [[ KEYBINDINGS ]]
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
 
-local action = wezterm.action
-local function is_vim(pane)
-	return pane:get_user_vars().IS_NVIM == "true"
-end
-
-local direction_keys = {
-	h = "Left",
-	j = "Down",
-	k = "Up",
-	l = "Right",
-}
-local function split_nav(resize_or_move, key)
-	return {
-		key = key,
-		mods = resize_or_move == "resize" and "CTRL|SHIFT" or "CTRL",
-		action = wezterm.action_callback(function(win, pane)
-			if is_vim(pane) then
-				-- pass the keys through to vim/nvim
-				win:perform_action({
-					SendKey = { key = key, mods = resize_or_move == "resize" and "CTRL|SHIFT" or "CTRL" },
-				}, pane)
-			else
-				if resize_or_move == "resize" then
-					win:perform_action({ AdjustPaneSize = { direction_keys[key], 5 } }, pane)
-				else
-					win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
-				end
-			end
-		end),
-	}
-end
 config.keys = {
-  {
-    key = "\\",
-    mods = "LEADER",
-    action = action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-  },
-  split_nav("move", "h"),
-	split_nav("move", "j"),
-	split_nav("move", "k"),
-	split_nav("move", "l"),
-	split_nav("resize", "h"),
-	split_nav("resize", "j"),
-	split_nav("resize", "k"),
-	split_nav("resize", "l"),
-  {
-    key = "-",
-    mods = "LEADER",
-    action = action.SplitVertical({ domain = "CurrentPaneDomain" }),
-  },
-  {
-    key = "m",
-    mods = "LEADER",
-    action = action.TogglePaneZoomState,
-  },
-  { key = "[", mods = "LEADER", action = action.ActivateCopyMode },
-  {
-    key = "c",
-    mods = "LEADER",
-    action = action.SpawnTab("CurrentPaneDomain"),
-  },
-  {
-    key = "p",
-    mods = "LEADER",
-    action = action.ActivateTabRelative(-1),
-  },
-  {
-    key = "n",
-    mods = "LEADER",
-    action = action.ActivateTabRelative(1),
-  },
+	-- 1. Pane Splitting
+	{
+		key = "\\",
+		mods = "LEADER",
+		action = action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "-",
+		mods = "LEADER",
+		action = action.SplitVertical({ domain = "CurrentPaneDomain" }),
+	},
+
+	-- 2. Pane Zooming
+	{
+		key = "m",
+		mods = "LEADER",
+		action = action.TogglePaneZoomState,
+	},
+
+	-- 3. Copy Mode
+	{ key = "[", mods = "LEADER", action = action.ActivateCopyMode },
+
+	-- 4. Tab Management
+	{
+		key = "c",
+		mods = "LEADER",
+		action = action.SpawnTab("CurrentPaneDomain"),
+	},
+	{
+		key = "p",
+		mods = "LEADER",
+		action = action.ActivateTabRelative(-1),
+	},
+	{
+		key = "n",
+		mods = "LEADER",
+		action = action.ActivateTabRelative(1),
+	},
+	{
+		key = "x",
+		mods = "LEADER",
+		action = action.CloseCurrentTab({ confirm = false }),
+	},
+
+	-- 5. THEME TOGGLE (The F11 Trick)
+	{
+		key = "t",
+		mods = "LEADER",
+		action = wezterm.action_callback(function(window, pane)
+			-- Get current overrides
+			local overrides = window:get_config_overrides() or {}
+
+			-- Logic: Toggle between Dark (Gruvbox) and Light (Catppuccin)
+			if overrides.color_scheme == "Catppuccin Latte" then
+				-- Switch to DARK
+				overrides.color_scheme = "Gruvbox Material (Gogh)"
+				overrides.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "DemiBold" })
+			else
+				-- Switch to LIGHT
+				overrides.color_scheme = "Catppuccin Latte"
+				-- Use "Bold" for light mode to improve contrast on 1080p
+				overrides.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "Bold" })
+			end
+
+			-- Apply WezTerm changes
+			window:set_config_overrides(overrides)
+
+			-- SEND F11 to the terminal (so Neovim hears it)
+			window:perform_action(action.SendKey({ key = "F11" }), pane)
+		end),
+	},
 }
 
+-- 6. Quick Tab Switching (1-9)
 for i = 1, 9 do
-  table.insert(config.keys, {
-    key = tostring(i),
-    mods = "LEADER",
-    action = action.ActivateTab(i - 1),
-  })
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "LEADER",
+		action = action.ActivateTab(i - 1),
+	})
 end
 
 return config
