@@ -34,6 +34,7 @@ return {
         send_paragraph = '<leader>rp',
         send_file = '<leader>rf',
         send_line = '<leader>rl',
+        send_until_cursor = '<leader>rc',
       },
 
       -- If you want the REPL to close when you quit nvim
