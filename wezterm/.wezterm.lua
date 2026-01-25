@@ -44,7 +44,19 @@ config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
 -- Listener for Neovim (or other apps)
 wezterm.on("user-var-changed", function(window, pane, name, value)
 	if name == "color_scheme" then
-		window:set_config_overrides({ color_scheme = value })
+		-- Default to "DemiBold" (for Dark / Gruvbox)
+		local new_weight = "DemiBold"
+
+		-- If switching to Light mode, force "Bold"
+		if value == "Catppuccin Latte" then
+			new_weight = "Bold"
+		end
+
+		-- Apply both simultaneously to prevent flickering or overrides clearing
+		window:set_config_overrides({
+			color_scheme = value,
+			font = wezterm.font("IosevkaTerm Nerd Font", { weight = new_weight }),
+		})
 	end
 end)
 
