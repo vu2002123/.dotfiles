@@ -1092,8 +1092,9 @@ require('lazy').setup({
     },
   },
 })
--- [[ THEME SYNC LOGIC (WezTerm <-> Neovim) ]]
--- This function receives F11 from WezTerm and toggles the internal theme
+
+-- -- [[ THEME SYNC LOGIC (WezTerm <-> Neovim) ]]
+-- -- This function receives F11 from WezTerm and toggles the internal theme
 local function toggle_theme()
   if vim.o.background == 'dark' then
     -- Switch to LIGHT (Catppuccin Latte)
@@ -1113,9 +1114,21 @@ end
 vim.keymap.set({ 'n', 'i', 'v' }, '<F11>', toggle_theme, { desc = 'Toggle Theme' })
 
 -- [[ STARTUP THEME ]]
+local f = loadfile(vim.fn.stdpath 'config' .. '/lua/custom/saved_theme.lua')
+local mode = f and f() or 'dark'
+
+if mode == 'light' then
+  vim.o.background = 'light'
+  require('catppuccin').setup { flavour = 'latte' }
+  vim.cmd.colorscheme 'catppuccin'
+else
+  vim.o.background = 'dark'
+  vim.g.gruvbox_material_background = 'medium'
+  vim.cmd.colorscheme 'gruvbox-material'
+end
 -- Force Gruvbox (Dark) on startup by default
-vim.o.background = 'light'
-require('catppuccin').setup { flavour = 'latte' }
-vim.cmd.colorscheme 'catppuccin'
+-- vim.o.background = 'light'
+-- require('catppuccin').setup { flavour = 'latte' }
+-- vim.cmd.colorscheme 'catppuccin'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -41,6 +41,13 @@ config.window_padding = {
 -- [[ KEYBINDINGS ]]
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
 
+-- Listener for Neovim (or other apps)
+wezterm.on("user-var-changed", function(window, pane, name, value)
+	if name == "color_scheme" then
+		window:set_config_overrides({ color_scheme = value })
+	end
+end)
+
 config.keys = {
 	-- 1. Pane Splitting
 	{
@@ -84,34 +91,6 @@ config.keys = {
 		key = "x",
 		mods = "LEADER",
 		action = action.CloseCurrentTab({ confirm = false }),
-	},
-
-	-- 5. THEME TOGGLE (The F11 Trick)
-	{
-		key = "t",
-		mods = "LEADER",
-		action = wezterm.action_callback(function(window, pane)
-			-- Get current overrides
-			local overrides = window:get_config_overrides() or {}
-
-			-- Logic: Toggle between Dark (Gruvbox) and Light (Catppuccin)
-			if overrides.color_scheme == "Catppuccin Latte" then
-				-- Switch to DARK
-				overrides.color_scheme = "Gruvbox Material (Gogh)"
-				overrides.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "DemiBold" })
-			else
-				-- Switch to LIGHT
-				overrides.color_scheme = "Catppuccin Latte"
-				-- Use "Bold" for light mode to improve contrast on 1080p
-				overrides.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "Bold" })
-			end
-
-			-- Apply WezTerm changes
-			window:set_config_overrides(overrides)
-
-			-- SEND F11 to the terminal (so Neovim hears it)
-			window:perform_action(action.SendKey({ key = "F11" }), pane)
-		end),
 	},
 }
 
