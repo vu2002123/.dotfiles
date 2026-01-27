@@ -16,7 +16,7 @@ end
 -- [[ GENERAL SETTINGS ]]
 config.default_domain = "WSL:Ubuntu"
 config.default_cwd = "/home/vu2002123"
-config.term = "wezterm"
+config.term = "xterm-256color"
 
 -- [[ APPEARANCE ]]
 -- Default to Light Mode
