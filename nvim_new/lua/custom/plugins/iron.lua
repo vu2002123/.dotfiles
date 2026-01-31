@@ -6,11 +6,15 @@ return {
 
     return {
       config = {
-        -- This forces the REPL to open on the right (Vertical Split)
-        -- '50' is the width of the pane. Change it to whatever you like.
-        repl_open_cmd = view.split.vertical.botright(70),
-
         -- Define how python should run
+        repl_filetype = function(bufnr, ft)
+          return ft
+        end,
+        dap_integration = true,
+        repl_open_cmd = {
+          view.split.vertical.rightbelow '%40', -- cmd_1: open a repl to the right
+          view.split.rightbelow '%25', -- cmd_2: open a repl below
+        },
         repl_definition = {
           python = {
             -- "python" will automatically use your currently active Conda env
@@ -25,7 +29,8 @@ return {
       -- <leader>rs = Send visual selection
       -- <leader>rr = Restart/Open REPL
       keymaps = {
-        toggle_repl = '<leader>rr',
+        toggle_repl_with_cmd_1 = '<leader>rr',
+        toggle_repl_with_cmd_2 = '<leader>rh',
         restart_repl = '<leader>rR',
         send_motion = '<leader>r',
         visual_send = '<leader>rv',
