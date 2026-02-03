@@ -218,11 +218,11 @@ set $Mantle 	#e6e9ef
 set $Crust 	#dce0e8 	
 
 # class                 border bground text indicator child_border
-client.focused          $Green $Green $Base $Peach $Green
-client.focused_inactive $Overlay0 $Overlay0 $Text $Peach $Overlay0 
-client.unfocused        $Surface1 $Surface1 $Text $Peach $Surface1
-client.urgent           $Red $Red $Base $Peach $Red
-client.placeholder      $Base $Base $Text $Peach $Base
+client.focused          0 $Green $Base $Peach 0
+client.focused_inactive 0 $Overlay0 $Text $Peach 0 
+client.unfocused        0 $Surface1 $Text $Peach 0
+client.urgent           0 $Red $Base $Peach 0
+client.placeholder      0 $Base $Text $Peach 0
 
 client.background       $Base
 
