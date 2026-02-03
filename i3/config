@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:IosevkaTerm Mono SemiBold 11
+font pango:IosevkaTerm Mono SemiBold 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -55,6 +55,7 @@ tiling_drag modifier titlebar
 
 # start a terminal
 bindsym $mod+Return exec wezterm
+bindsym $mod+m exec librewolf
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -189,38 +190,194 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# class                 border  bground text    indicator child_border
-client.focused          #40A02B #EFF1F5 #40A02B #8839EF   #40A02B
-client.focused_inactive #179299 #EFF1F5 #179299 #8839EF   #179299
-client.unfocused        #7C7F93 #7C7F93 #EFF1F5 #7C7F93   #7C7F93
-client.urgent           #4C4F69 #D20F39 #EFF1F5 #D20F39   #D20F39
-client.placeholder      #ACB0BE #ACB0BE #EFF1F5 #ACB0BE   #ACB0BE
+set $Rosewater 	#dc8a78 	
+set $Flamingo 	#dd7878 	
+set $Pink 	#ea76cb 	
+set $Mauve 	#8839ef 	
+set $Red 	#d20f39 	
+set $Maroon 	#e64553 	
+set $Peach 	#fe640b 	
+set $Yellow 	#df8e1d 	
+set $Green 	#40a02b 	
+set $Teal 	#179299 	
+set $Sky 	#04a5e5 	
+set $Sapphire 	#209fb5 	
+set $Blue 	#1e66f5 	
+set $Lavender 	#7287fd 	
+set $Text 	#4c4f69 	
+set $Subtext1 	#5c5f77 	
+set $Subtext0 	#6c6f85 	
+set $Overlay2 	#7c7f93 	
+set $Overlay1 	#8c8fa1 	
+set $Overlay0 	#9ca0b0 	
+set $Surface2 	#acb0be 	
+set $Surface1 	#bcc0cc 	
+set $Surface0 	#ccd0da 	
+set $Base 	#eff1f5 	
+set $Mantle 	#e6e9ef 	
+set $Crust 	#dce0e8 	
 
-client.background       #EFF1F5
+# class                 border bground text indicator child_border
+client.focused          $Green $Green $Base $Peach $Green
+client.focused_inactive $Overlay0 $Overlay0 $Text $Peach $Overlay0 
+client.unfocused        $Surface1 $Surface1 $Text $Peach $Surface1
+client.urgent           $Red $Red $Base $Peach $Red
+client.placeholder      $Base $Base $Text $Peach $Base
+
+client.background       $Base
 
 # Start i3bar to display a workspace bfear (plus the system information i3status
 # finds out, if available)
 bar {
+	position top
         status_command i3blocks -c /home/$USER/.config/i3blocks/i3blocks.conf
 	colors {
-		background #EFF1F5
-			statusline #4C4F69
-			separator  #CCD0DA
+		background $Base
+		statusline $Text
+		separator  $Surface0
 
-			focused_workspace  #40A02B #EFF1F5 #40A02B
-			active_workspace   #179299 #EFF1F5 #179299
-			inactive_workspace #7C7F93 #7C7F93 #EFF1F5
-			urgent_workspace   #D20F39 #D20F39 #EFF1F5
-			binding_mode       #ACB0BE #D20F39 #EFF1F5
+		focused_workspace  $Green $Green $Base
+		active_workspace   $Overlay0 $Overlay0 $Base
+		inactive_workspace $Base $Base $Text
+		urgent_workspace   $Red $Red $Base
+		binding_mode       $Red $Red $Base
 	}
 }
 
 # Display resolution
-exec_always xrandr --output eDP --mode 2560x1600 --scale 1
+exec_always xrandr --output eDP --mode 1920x1080 --scale 1
 exec_always feh --bg-fill "$HOME/.config/i3/2025 Abu Dhabi GP - Race Start 4.jpg"
 exec_always --no-startup-id xrdb -merge ~/.Xresources
+exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
 bindsym $mod+x exec i3lock
 
 # for_window [class="org.wezfurlong.wezterm"] move to workspace $ws1
 # for_window [class="librewolf"] move to workspace $ws2
+
+# default gaps
+gaps inner 10
+gaps outer 2
+
+# gaps
+set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_verti Vertical Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_top Top Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_right Right Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_bottom Bottom Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_left Left Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym h      mode "$mode_gaps_horiz"
+        bindsym v      mode "$mode_gaps_verti"
+        bindsym t      mode "$mode_gaps_top"
+        bindsym r      mode "$mode_gaps_right"
+        bindsym b      mode "$mode_gaps_bottom"
+        bindsym l      mode "$mode_gaps_left"
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_horiz" {
+        bindsym plus  gaps horizontal current plus 5
+        bindsym minus gaps horizontal current minus 5
+        bindsym 0     gaps horizontal current set 0
+
+        bindsym Shift+plus  gaps horizontal all plus 5
+        bindsym Shift+minus gaps horizontal all minus 5
+        bindsym Shift+0     gaps horizontal all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_verti" {
+        bindsym plus  gaps vertical current plus 5
+        bindsym minus gaps vertical current minus 5
+        bindsym 0     gaps vertical current set 0
+
+        bindsym Shift+plus  gaps vertical all plus 5
+        bindsym Shift+minus gaps vertical all minus 5
+        bindsym Shift+0     gaps vertical all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_top" {
+        bindsym plus  gaps top current plus 5
+        bindsym minus gaps top current minus 5
+        bindsym 0     gaps top current set 0
+
+        bindsym Shift+plus  gaps top all plus 5
+        bindsym Shift+minus gaps top all minus 5
+        bindsym Shift+0     gaps top all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_right" {
+        bindsym plus  gaps right current plus 5
+        bindsym minus gaps right current minus 5
+        bindsym 0     gaps right current set 0
+
+        bindsym Shift+plus  gaps right all plus 5
+        bindsym Shift+minus gaps right all minus 5
+        bindsym Shift+0     gaps right all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_bottom" {
+        bindsym plus  gaps bottom current plus 5
+        bindsym minus gaps bottom current minus 5
+        bindsym 0     gaps bottom current set 0
+
+        bindsym Shift+plus  gaps bottom all plus 5
+        bindsym Shift+minus gaps bottom all minus 5
+        bindsym Shift+0     gaps bottom all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_left" {
+        bindsym plus  gaps left current plus 5
+        bindsym minus gaps left current minus 5
+        bindsym 0     gaps left current set 0
+
+        bindsym Shift+plus  gaps left all plus 5
+        bindsym Shift+minus gaps left all minus 5
+        bindsym Shift+0     gaps left all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+
 
