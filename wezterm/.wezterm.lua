@@ -3,10 +3,10 @@ local mux = wezterm.mux
 local action = wezterm.action
 
 -- Startup: Maximize the window immediately
-wezterm.on("gui-startup", function(cmd)
-	local tab, pane, window = mux.spawn_window(cmd or {})
-	window:gui_window():maximize()
-end)
+-- wezterm.on("gui-startup", function(cmd)
+-- 	local tab, pane, window = mux.spawn_window(cmd or {})
+-- 	window:gui_window():maximize()
+-- end)
 
 local config = {}
 if wezterm.config_builder then
@@ -14,17 +14,21 @@ if wezterm.config_builder then
 end
 
 -- [[ GENERAL SETTINGS ]]
-config.default_domain = "WSL:Ubuntu"
-config.default_cwd = "/home/vu2002123"
+-- config.default_domain = "WSL:Ubuntu"
+-- config.default_cwd = "/home/vu2002123"
 config.term = "xterm-256color"
+config.front_end = "WebGpu" -- Bypasses older X11 hardware detection
+config.scrollback_lines = 3000 -- Lowering this from default saves RAM/init time
+config.enable_wayland = false -- Stops checking for Wayland (you are on i3/X11)
+config.check_for_updates = false -- Stops a network check on startup
 
 -- [[ APPEARANCE ]]
 -- Default to Light Mode
 config.color_scheme = "Catppuccin Latte"
 config.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "Bold" })
-config.font_size = 11.0
+config.font_size = 14.0
 config.line_height = 1.2
-config.window_decorations = "RESIZE"
+config.window_decorations = "NONE"
 
 -- Tab Bar
 config.enable_tab_bar = true
@@ -32,10 +36,10 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- Padding
 config.window_padding = {
-	top = 10,
-	bottom = 10,
-	left = 10,
-	right = 10,
+	top = 5,
+	bottom = 5,
+	left = 5,
+	right = 5,
 }
 
 -- [[ KEYBINDINGS ]]
