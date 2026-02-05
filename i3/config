@@ -209,3 +209,12 @@ exec_always feh --bg-fill "$HOME/.config/i3/2025 Abu Dhabi GP - Race Start 4.jpg
 # Set direction for split
 bindsym $mod+backslash split h
 bindsym $mod+minus split v
+
+# Copy the focused WINDOW to clipboard
+bindsym $mod+p exec --no-startup-id scrot -u -z '/tmp/win.png' -e 'xclip -selection clipboard -t image/png -i $f && rm $f'
+
+# Copy the entire SCREEN to clipboard
+bindsym $mod+Shift+p exec --no-startup-id scrot -z '/tmp/scr.png' -e 'xclip -selection clipboard -t image/png -i $f && rm $f'
+
+# Enable fast scrolling
+exec_always --no-startup-id xset r rate 200 30
