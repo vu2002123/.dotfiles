@@ -24,11 +24,11 @@ config.check_for_updates = false -- Stops a network check on startup
 
 -- [[ APPEARANCE ]]
 -- Default to Light Mode
-config.color_scheme = "Catppuccin Latte"
+config.color_scheme = "rose-pine-dawn"
 config.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "Bold" })
 config.font_size = 14.0
-config.line_height = 1
-config.window_decorations = "NONE"
+config.line_height = 1.1
+config.window_decorations = "RESIZE"
 
 -- Tab Bar
 config.enable_tab_bar = true
