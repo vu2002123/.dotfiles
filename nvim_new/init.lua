@@ -195,7 +195,9 @@ vim.opt.foldenable = false
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit insert mode with jj' })
-
+vim.keymap.set('n', '<leader>ms', '<cmd>MarpStart<cr>', { desc = 'Start Marp Server' })
+vim.keymap.set('n', '<leader>me', '<cmd>MarpStop<cr>', { desc = 'Stop Marp Server' })
+vim.keymap.set('n', '<leader>mt', '<cmd>MarpToggle<cr>', { desc = 'Toggle Marp Server' })
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -1022,16 +1024,16 @@ require('lazy').setup({
       config.setup {
         ensure_installed = { 'bash', 'c', 'python', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'vim', 'vimdoc' },
         -- Autoinstall languages that are not installed
-        auto_install = true,
+        auto_install = false,
         highlight = {
           enable = true,
-          disable = { 'csv', 'tsv' },
+          disable = { 'csv', 'tsv', 'latex', 'tex' },
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
           --  If you are experiencing weird indenting issues, add the language to
           --  the list of additional_vim_regex_highlighting and disabled languages for indent.
           additional_vim_regex_highlighting = { 'ruby' },
         },
-        indent = { enable = true, disable = { 'ruby' } },
+        indent = { enable = true, disable = { 'ruby', 'latex', 'tex' } },
       }
     end,
     -- There are additional nvim-treesitter modules that you can use to interact
