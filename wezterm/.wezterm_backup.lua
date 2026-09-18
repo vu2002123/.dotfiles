@@ -14,13 +14,7 @@ if wezterm.config_builder then
 end
 
 -- [[ GENERAL SETTINGS ]]
--- config.default_domain = "WSL:Ubuntu"
--- config.default_cwd = "/home/vu2002123"
 config.term = "xterm-256color"
-config.front_end = "WebGpu" -- Bypasses older X11 hardware detection
-config.scrollback_lines = 3000 -- Lowering this from default saves RAM/init time
-config.enable_wayland = false -- Stops checking for Wayland (you are on i3/X11)
-config.check_for_updates = false -- Stops a network check on startup
 
 -- [[ APPEARANCE ]]
 -- Default to Light Mode
@@ -36,33 +30,14 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- Padding
 config.window_padding = {
-	top = 5,
-	bottom = 5,
-	left = 5,
-	right = 5,
+	top = 10,
+	bottom = 10,
+	left = 10,
+	right = 10,
 }
 
 -- [[ KEYBINDINGS ]]
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
-
--- Listener for Neovim (or other apps)
-wezterm.on("user-var-changed", function(window, pane, name, value)
-	if name == "color_scheme" then
-		-- Default to "DemiBold" (for Dark / Gruvbox)
-		local new_weight = "DemiBold"
-
-		-- If switching to Light mode, force "Bold"
-		if value == "Catppuccin Latte" then
-			new_weight = "Bold"
-		end
-
-		-- Apply both simultaneously to prevent flickering or overrides clearing
-		window:set_config_overrides({
-			color_scheme = value,
-			font = wezterm.font("IosevkaTerm Nerd Font", { weight = new_weight }),
-		})
-	end
-end)
 
 config.keys = {
 	-- 1. Pane Splitting

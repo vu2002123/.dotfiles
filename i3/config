@@ -156,7 +156,7 @@ bindsym $mod+$smod+r restart
 bindsym $mod+$smod+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Set wallpaper
-exec_always --no-startup-id xrandr --output eDP-1 --primary --mode 2560x1600 --rate 120 --output DisplayPort-2 --mode 2560x1440 --rate 180 --rotate left --left-of eDP-1
+exec_always --no-startup-id xrandr --output eDP-1 --primary --mode 2560x1600 --rate 120 --output DisplayPort-2 --mode 2560x1440 --rate 180 --rotate normal --right-of eDP-1
 exec_always feh --bg-fill "$HOME/.config/i3/patrick-ryan-3kUIaB2EPp8-unsplash.jpg"
 
 # Set direction for split

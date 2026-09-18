@@ -14,7 +14,7 @@
 
 	alt-fgd: #faf4ed;
 
-	font: "IosevkaTerm Mono SemiBold 18";
+	font: "Cartograph CF Bold 12";
 
 	foreground: @fgd;
 	background: @bg;
