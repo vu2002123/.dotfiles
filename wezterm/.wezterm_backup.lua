@@ -4,7 +4,7 @@ local action = wezterm.action
 
 -- Startup: Maximize the window immediately
 -- wezterm.on("gui-startup", function(cmd)
--- 	local tab, pane, window = mux.spawn_window(cmd or {})
+-- -- 	local tab, pane, window = mux.spawn_window(cmd or {})
 -- 	window:gui_window():maximize()
 -- end)
 
@@ -15,6 +15,7 @@ end
 
 -- [[ GENERAL SETTINGS ]]
 config.term = "xterm-256color"
+config.adjust_window_size_when_changing_font_size = false
 
 -- [[ APPEARANCE ]]
 -- Default to Light Mode
@@ -22,7 +23,6 @@ config.color_scheme = "rose-pine-dawn"
 config.font = wezterm.font("IosevkaTerm Nerd Font", { weight = "Bold" })
 config.font_size = 14.0
 config.line_height = 1.1
-config.window_decorations = "RESIZE"
 
 -- Tab Bar
 config.enable_tab_bar = true

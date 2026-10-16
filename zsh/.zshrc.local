@@ -1,8 +1,5 @@
-export PATH="$PATH:/opt/nvim/bin/"
 export PATH="$PATH:$HOME/.local/bin/"
-export PATH="$PATH:$HOME/go/bin/"
 export PATH="$PATH:$HOME/opt/"
-export PATH="$PATH:$HOME/.cargo/bin/"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

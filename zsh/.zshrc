@@ -85,6 +85,7 @@ if [[ -f ~/.zshrc.local ]]; then
 fi
 
 # Shell integrations
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 eval "$(zoxide init --cmd cd zsh)"
 
